@@ -1,0 +1,50 @@
+# Local testing version of Elasticsearch stack designed for
+# container-native deployment on Joyent's Triton platform.
+
+elasticsearch_master:
+    extends:
+      file: docker-compose.yml
+      service: elasticsearch
+    mem_limit: 512m
+    build: .
+    environment:
+      - CONSUL=consul
+      - ES_SERVICE_NAME=elasticsearch-master
+      - ES_NODE_MASTER=true
+      - ES_NODE_DATA=false
+      - CONTAINERPILOT=file:///etc/containerpilot.json
+    links:
+    - consul:consul
+
+elasticsearch:
+    extends:
+      file: docker-compose.yml
+      service: elasticsearch
+    mem_limit: 512m
+    build: .
+    environment:
+      - CONSUL=consul
+      - ES_SERVICE_NAME=elasticsearch-master
+    links:
+      - consul:consul
+
+elasticsearch_data:
+    extends:
+      file: docker-compose.yml
+      service: elasticsearch
+    mem_limit: 512m
+    build: .
+    environment:
+      - CONSUL=consul
+      - ES_SERVICE_NAME=elasticsearch-data
+      - ES_NODE_MASTER=false
+      - ES_NODE_DATA=true
+    links:
+      - consul:consul
+
+consul:
+    extends:
+      file: docker-compose.yml
+      service: consul
+    ports:
+      - 8500:8500

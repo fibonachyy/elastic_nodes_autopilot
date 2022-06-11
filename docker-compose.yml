@@ -1,0 +1,61 @@
+# Elasticsearch stack designed for container-native deployment
+# using the Autopilot Pattern on Joyent's Triton platform.
+
+# ---------------------------------------------------
+# This common service definition is the default for nodes that both store
+# data and act as potential masternodes. It also serves as a template for
+# master-only and data-only ES nodes.
+
+elasticsearch:
+    image: autopilotpattern/elasticsearch:latest
+    mem_limit: 4g
+    restart: always
+    labels:
+      - triton.cns.services=elasticsearch-master
+
+    env_file: _env
+    environment:
+      - ES_SERVICE_NAME=elasticsearch-master
+      - CLUSTER_NAME=elasticsearch
+      - ES_HEAP_SIZE=1g # set to 50% of mem_limit, but no more than 31g
+      - ES_NODE_MASTER=true # default
+      - ES_NODE_DATA=true   # default
+
+      # set the number of threads we want based on the number of CPU shares
+      # that we'll get for this size container on Triton
+      - ES_JAVA_OPTS=-XX:-UseGCTaskAffinity -XX:-BindGCTaskThreadsToCPUs -XX:ParallelGCThreads=1 -XX:ParallelCMSThreads=1
+      # ES_HEAP_NEWSIZE # optional override
+      # ES_DIRECT_SIZE  # optional override
+
+    command: >
+      /usr/local/bin/containerpilot
+      /usr/share/elasticsearch/bin/elasticsearch
+      --default.path.conf=/etc/elasticsearch
+
+# ---------------------------------------------------
+# The master-only node serves as the coordinator of the cluster only
+
+elasticsearch_master:
+    extends:
+      service: elasticsearch
+    labels:
+      - triton.cns.services=elasticsearch-master
+    environment:
+      - ES_SERVICE_NAME=elasticsearch-master
+      - ES_NODE_MASTER=true
+      - ES_NODE_DATA=false
+
+# ---------------------------------------------------
+# Data-only nodes never act as master nodes.
+
+elasticsearch_data:
+    extends:
+      service: elasticsearch
+    labels:
+      - triton.cns.services=elasticsearch-data
+    environment:
+      - ES_SERVICE_NAME=elasticsearch-data
+      - ES_NODE_MASTER=false
+      - ES_NODE_DATA=true
+
+
