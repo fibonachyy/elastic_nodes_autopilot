@@ -1,0 +1,78 @@
+Connected to Elasticsearch was successful!
+{
+  total: 25939,
+  max_score: 1,
+  hits: [
+    {
+      _index: 'test_elastic',
+      _type: 'doc',
+      _id: 'AYF6nelhdiqyw8egldYH',
+      _score: 1,
+      _source: [Object]
+    },
+    {
+      _index: 'test_elastic',
+      _type: 'doc',
+      _id: 'AYF6nemidiqyw8egldYL',
+      _score: 1,
+      _source: [Object]
+    },
+    {
+      _index: 'test_elastic',
+      _type: 'doc',
+      _id: 'AYF6nemwdiqyw8egldYM',
+      _score: 1,
+      _source: [Object]
+    },
+    {
+      _index: 'test_elastic',
+      _type: 'doc',
+      _id: 'AYF6neoqdiqyw8egldYU',
+      _score: 1,
+      _source: [Object]
+    },
+    {
+      _index: 'test_elastic',
+      _type: 'doc',
+      _id: 'AYF6nepJdiqyw8egldYW',
+      _score: 1,
+      _source: [Object]
+    },
+    {
+      _index: 'test_elastic',
+      _type: 'doc',
+      _id: 'AYF6neqGdiqyw8egldYa',
+      _score: 1,
+      _source: [Object]
+    },
+    {
+      _index: 'test_elastic',
+      _type: 'doc',
+      _id: 'AYF6nerddiqyw8egldYg',
+      _score: 1,
+      _source: [Object]
+    },
+    {
+      _index: 'test_elastic',
+      _type: 'doc',
+      _id: 'AYF6newRdiqyw8egldY1',
+      _score: 1,
+      _source: [Object]
+    },
+    {
+      _index: 'test_elastic',
+      _type: 'doc',
+      _id: 'AYF6newhdiqyw8egldY2',
+      _score: 1,
+      _source: [Object]
+    },
+    {
+      _index: 'test_elastic',
+      _type: 'doc',
+      _id: 'AYF6nexVdiqyw8egldY5',
+      _score: 1,
+      _source: [Object]
+    }
+  ]
+}
+search time: 6.058ms

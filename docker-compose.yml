@@ -5,8 +5,10 @@
 # This common service definition is the default for nodes that both store
 # data and act as potential masternodes. It also serves as a template for
 # master-only and data-only ES nodes.
+version: "3.3"
+services:
 
-elasticsearch:
+  elasticsearch:
     image: autopilotpattern/elasticsearch:latest
     mem_limit: 4g
     restart: always
@@ -26,7 +28,8 @@ elasticsearch:
       - ES_JAVA_OPTS=-XX:-UseGCTaskAffinity -XX:-BindGCTaskThreadsToCPUs -XX:ParallelGCThreads=1 -XX:ParallelCMSThreads=1
       # ES_HEAP_NEWSIZE # optional override
       # ES_DIRECT_SIZE  # optional override
-
+    expose:
+      - 9200
     command: >
       /usr/local/bin/containerpilot
       /usr/share/elasticsearch/bin/elasticsearch
@@ -35,7 +38,7 @@ elasticsearch:
 # ---------------------------------------------------
 # The master-only node serves as the coordinator of the cluster only
 
-elasticsearch_master:
+  elasticsearch_master:
     extends:
       service: elasticsearch
     labels:
@@ -48,7 +51,7 @@ elasticsearch_master:
 # ---------------------------------------------------
 # Data-only nodes never act as master nodes.
 
-elasticsearch_data:
+  elasticsearch_data:
     extends:
       service: elasticsearch
     labels:
@@ -58,4 +61,12 @@ elasticsearch_data:
       - ES_NODE_MASTER=false
       - ES_NODE_DATA=true
 
-
+  nginx:
+    image: nginx:latest
+    ports:
+        - 9200:9200
+    volumes:
+        - ${PWD}/nginx-config/:/etc/nginx/conf.d/
+    command: /bin/bash -c "nginx -g 'daemon off;'"
+    links:
+      - "elasticsearch"
