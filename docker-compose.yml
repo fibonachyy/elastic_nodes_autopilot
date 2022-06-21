@@ -60,7 +60,13 @@ services:
       - ES_SERVICE_NAME=elasticsearch-data
       - ES_NODE_MASTER=false
       - ES_NODE_DATA=true
-
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:8.2.3
+  #   environment:
+  #     SERVER_NAME: kibana.example.org
+  #     ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+  #   links:
+  #     - "elasticsearch"
   nginx:
     image: nginx:latest
     ports:

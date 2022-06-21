@@ -20,18 +20,17 @@ client.ping(
 
 async function run() {
   // Let's start by indexing some data
-  //   for (let i = 0; i <= 1000000; i++) {
-  //     console.log(i);
-  //     await client.index({
-  //       index: "test_elastic",
-  //       type: ["doc"],
-  //       body: {
-  //         character: `Ned Stark ${i}`,
-  //         quote: `Winter is coming. ${i}`,
-  //       },
-  //     });
-  //   }
-
+  // for (let i = 0; i <= 1000; i++) {
+  //   console.log(i);
+  //   await client.index({
+  //     index: "test_elastic",
+  //     type: ["doc"],
+  //     body: {
+  //       character: `Ned Stark ${i}`,
+  //       quote: `Winter is coming. ${i}`,
+  //     },
+  //   });
+  // }
   //   await client.index({
   //     index: "game-of-thrones",
   //     document: {
@@ -39,7 +38,6 @@ async function run() {
   //       quote: "I am the blood of the dragon.",
   //     },
   //   });
-
   //   await client.index({
   //     index: "game-of-thrones",
   //     document: {
@@ -47,22 +45,19 @@ async function run() {
   //       quote: "A mind needs books like a sword needs a whetstone.",
   //     },
   //   });
-
   //   // here we are forcing an index refresh, otherwise we will not
   //   // get any result in the consequent search
   await client.indices.refresh({ index: "test_elastic" });
-
-  //   // Let's search!
+  // //   // Let's search!
   console.time("search time");
   const result = await client.search({
     index: "test_elastic",
-
-    scroll: "100s",
+    scroll: "10s",
     query: {
       match: { quote: "ned" },
     },
   });
-  console.log(result.body.hits);
+  console.log(result.body.hits.hits);
   console.timeEnd("search time");
 }
 
